@@ -570,6 +570,54 @@
     </div>
 
     <script>
+        // Authentication System
+        function authenticate() {
+            const password = document.getElementById('passwordInput').value;
+            const correctPassword = 'wahab@2024';
+            
+            if (password === correctPassword) {
+                // Successful login
+                document.getElementById('loginScreen').style.display = 'none';
+                const mainSystem = document.getElementById('mainSystem');
+                mainSystem.style.display = 'block';
+                setTimeout(() => {
+                    mainSystem.classList.add('active');
+                }, 100);
+                
+                // Initialize the main system
+                window.protocol = new EclipseProtocol();
+            } else {
+                // Failed login
+                const input = document.getElementById('passwordInput');
+                input.value = '';
+                input.style.borderColor = '#ff0000';
+                input.style.boxShadow = '0 0 15px rgba(255, 0, 0, 0.5)';
+                input.placeholder = 'ACCESS DENIED - INCORRECT CLEARANCE CODE';
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    input.style.borderColor = '#00ff41';
+                    input.style.boxShadow = 'none';
+                    input.placeholder = 'ENTER CLEARANCE CODE';
+                }, 2000);
+            }
+        }
+
+        function logout() {
+            document.getElementById('mainSystem').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('passwordInput').value = '';
+        }
+
+        // Allow Enter key for login
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    authenticate();
+                }
+            });
+        });
+
         class EclipseProtocol {
             constructor() {
                 this.files = [];
